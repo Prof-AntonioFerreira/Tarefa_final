@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Controlar entradas</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/estilo.css">
+				
+				
+</head>
+<body>
+
+
+	<div id="area-cabecalho">
+		
+		<div id="area-logo">
+			
+			<h1>Serafim<span class="branco">Leite</span></h1>
+		</div>
+		<div id="area-menu">
+			<a href="index.html">A escola</a>
+			<a href="controlo-entradas.html">Controlar as entradas</a>
+			<a href="contatar.html">contato</a>
+		
+		</div>
+
+	</div>
+
+
+	<div>
+
+		<div id="inicio"> Controlador de entradas na sala de aula</div>
+		<button id="button" type="button" onclick="init()">Start</button>
+		<div id="webcam-container"></div>
+		<div id="label-container"></div>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+		<script type="text/javascript">
+		// More API functions here:
+		// https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+	
+		// the link to your model provided by Teachable Machine export panel
+		// const URL = "./my_model/";-->
+	
+		const URL = "https://teachablemachine.withgoogle.com/models/FaD4k8kEP/";
+		let model, webcam, labelContainer, maxPredictions, flag;
+	
+		// Load the image model and setup the webcam
+		async function init() {
+			const modelURL = URL + "model.json";
+			const metadataURL = URL + "metadata.json";
+	
+			// load the model and metadata
+			// Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+			// or files from your local hard drive
+			// Note: the pose library adds "tmImage" object to your window (window.tmImage)
+			model = await tmImage.load(modelURL, metadataURL);
+			maxPredictions = model.getTotalClasses();
+	
+			// Convenience function to setup a webcam
+			const flip = true; // whether to flip the webcam
+			webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+			await webcam.setup(); // request access to the webcam
+			await webcam.play();
+			window.requestAnimationFrame(loop);
+	
+			// append elements to the DOM
+			document.getElementById("webcam-container").appendChild(webcam.canvas);
+			labelContainer = document.getElementById("label-container");
+			for (let i = 0; i < maxPredictions; i++) { // and class labels
+				labelContainer.appendChild(document.createElement("div"));
+			}
+		}
+	
+		async function loop() {
+			webcam.update(); // update the webcam frame
+			await predict();
+			window.requestAnimationFrame(loop);
+		}
+	
+		// run the webcam image through the image model
+		async function predict() 
+		{
+			flag=0;
+			// predict can take in an image, video or canvas html element
+			const prediction = await model.predict(webcam.canvas);
+			for (let i = 0; i < maxPredictions; i++) 
+			{
+
+				if (prediction[0].probability.toFixed(2)>0.90){
+
+					const classPrediction = "Olá professor António"
+				/*	labelContainer.childNodes[i].innerHTML = classPrediction;*/
+					document.getElementById("caixa1").innerHTML = classPrediction;
+					flag=1;
+						
+				}
+				if (prediction[1].probability.toFixed(2)>0.90){
+
+					const classPrediction = "Olá Afonso"
+					document.getElementById("caixa1").innerHTML = classPrediction;
+					/*labelContainer.childNodes[i].innerHTML = classPrediction;*/
+					flag=1;
+					
+				}
+				if (prediction[2].probability.toFixed(2)>0.90){
+
+					const classPrediction = "Olá Hugo"
+					document.getElementById("caixa1").innerHTML = classPrediction;
+					/*labelContainer.childNodes[i].innerHTML = classPrediction;*/
+					flag=1;
+				}
+				if (prediction[3].probability.toFixed(2)>0.90){
+
+					const classPrediction = "Olá Edgar"
+					
+					/*labelContainer.childNodes[i].innerHTML = classPrediction;*/
+					document.getElementById("caixa1").innerHTML = classPrediction;
+					flag=1;
+				}
+				if (prediction[4].probability.toFixed(2)>0.90){
+
+					const classPrediction = "Olá Diogo"
+					document.getElementById("caixa1").innerHTML = classPrediction;
+				/*	labelContainer.childNodes[i].innerHTML = classPrediction;*/
+					flag=1;
+				}
+				if (prediction[5].probability.toFixed(2)>0.90){
+
+					const classPrediction = "Olá José"
+					document.getElementById("caixa1").innerHTML = classPrediction;
+					/*labelContainer.childNodes[i].innerHTML = classPrediction;*/
+					flag=1;
+				}
+				if (prediction[6].probability.toFixed(2)>0.90){
+
+					const classPrediction = "Olá Alexandra"
+					document.getElementById("caixa1").innerHTML = classPrediction;
+				/*	labelContainer.childNodes[i].innerHTML = classPrediction;*/
+					flag=1;
+				}
+				if (prediction[7].probability.toFixed(2)>0.90){
+
+					const classPrediction = "Olá Ândria"
+					document.getElementById("caixa1").innerHTML = classPrediction;
+				/*	labelContainer.childNodes[i].innerHTML = classPrediction;*/
+					flag=1;
+				}
+				if (prediction[8].probability.toFixed(2)>0.90){
+
+					const classPrediction = "Olá André"
+					document.getElementById("caixa1").innerHTML = classPrediction;
+					/*labelContainer.childNodes[i].innerHTML = classPrediction;*/
+					flag=1;
+				}
+				if (prediction[9].probability.toFixed(2)>0.90){
+
+					const classPrediction = "Olá Alexandra"
+					document.getElementById("caixa1").innerHTML = classPrediction;
+					/*labelContainer.childNodes[i].innerHTML = classPrediction;*/
+					flag=1;
+				}
+				if (flag==0) {
+
+					const classPrediction = "Olá, não tem permissao para entrar"
+					/*labelContainer.childNodes[i].innerHTML = classPrediction;*/
+					document.getElementById("caixa1").innerHTML = classPrediction;
+					
+				}
+				
+				
+				
+			}
+		}
+
+		</script>
+	</div>
+<div>
+
+	
+		<div id="caixa1"></div>
+	
+	
+
+
+	<div id="rodape">
+		Todos os direitos reservados
+	</div>
+
+</div>
+
+</body>
+</html>
